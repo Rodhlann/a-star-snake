@@ -4,14 +4,31 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="./public/styles.css" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0;">
     <title>timpepper.dev</title>
   </head>
   <body>
     <header>
-      <p>This is a work in progress! Come back soon :) Next time it will hopefully be interactive, at least</p>
+      <p>This is a work in progress! Come back soon :) It's interactive though! Next time hopefully there will be some search behavior</p>
     </header>
   
-    <canvas id="canvas"></canvas>
+    <div id="canvas_wrapper">
+      <canvas id="canvas"></canvas>
+      <div id="canvas_legend">
+        <div class="canvas_legend_entry">
+          <div id="canvas_legend_collision" class="canvas_legend_block"></div>
+          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.COLLISION)">Collision</button>
+        </div>
+        <div class="canvas_legend_entry">
+          <div id="canvas_legend_start" class="canvas_legend_block"></div>
+          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.START)">Start</button>
+        </div>
+        <div class="canvas_legend_entry">
+          <div id="canvas_legend_end" class="canvas_legend_block"></div>
+          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.END)">End</button>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript" src="./canvas.js"></script>
   </body>

@@ -1,0 +1,41 @@
+#canvas_wrapper {
+
+}
+
+#canvas_legend {
+  width: 100px;
+  border: 1px solid black;
+}
+
+.canvas_legend_entry {
+  display: flex;
+  flex-direction: row;
+}
+
+#canvas_legend_collision {
+  background-color: #9b9b9b;
+}
+
+#canvas_legend_start {
+  background-color: green;
+}
+
+#canvas_legend_end {
+  background-color: red;
+}
+
+.canvas_legend_block {
+  width: 25px;
+  height: 25px;
+  border-right: 1px solid black;
+}
+
+.canvas_legend_button {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+.canvas_legend_button:last-of-type {
+  border-bottom: none;
+}
