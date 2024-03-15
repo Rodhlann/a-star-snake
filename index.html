@@ -4,29 +4,64 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="./public/styles.css" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0;">
     <title>timpepper.dev</title>
   </head>
   <body>
-    <header>
-      <p>This is a work in progress! Come back soon :) It's interactive though! Next time hopefully there will be some search behavior</p>
+    <div class="banner-info">
+      <p>
+        This is a work in progress! Come back soon :) It's interactive now though! Next 
+        time hopefully there will be some search behavior
+      </p>
       <p><a href="https://timpepper.dev">Take me home!!</a></p>
+    </div>
+
+    <header>
+      <h1>A* Search Algorithm</h1>
+      <p>
+        Javascript implementation of the popular A* Search Algorithm intended as a learning 
+        exercise and reference for future game development endeavors.
+      </p>
     </header>
   
     <div id="canvas_wrapper">
-      <canvas id="canvas"></canvas>
-      <div id="canvas_legend">
-        <div class="canvas_legend_entry">
-          <div id="canvas_legend_collision" class="canvas_legend_block"></div>
-          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.COLLISION)">Collision</button>
+      <div>
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="canvas_buttons_wrapper">
+        <div class="canvas_buttons">
+          <div class="canvas_legend_colors">
+            <div id="canvas_legend_start" class="canvas_legend_block"></div>
+            <div id="canvas_legend_collision" class="canvas_legend_block"></div>
+            <div id="canvas_legend_end" class="canvas_legend_block"></div>
+          </div>
+          <div id="canvas_legend_buttons">
+            <button 
+              class="canvas_legend_button" 
+              onclick="updateSelectedCellState(CELL_STATES.START)"
+            >
+              Start
+            </button>
+            <button 
+              class="canvas_legend_button" 
+              onclick="updateSelectedCellState(CELL_STATES.COLLISION)"
+            >
+              Collision
+            </button>
+            <button 
+              class="canvas_legend_button" 
+              onclick="updateSelectedCellState(CELL_STATES.END)"
+            >
+              End
+            </button>
+          </div>
         </div>
-        <div class="canvas_legend_entry">
-          <div id="canvas_legend_start" class="canvas_legend_block"></div>
-          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.START)">Start</button>
-        </div>
-        <div class="canvas_legend_entry">
-          <div id="canvas_legend_end" class="canvas_legend_block"></div>
-          <button class="canvas_legend_button" onclick="updateSelectedCellState(CELL_STATES.END)">End</button>
+        <div class="canvas_buttons">
+          <button 
+            class="canvas_legend_button" 
+            onclick="resetCellState()"
+          >
+            Reset
+          </button>
         </div>
       </div>
     </div>

@@ -9,11 +9,11 @@ const GRID_WIDTH_COUNT = CANVAS_WIDTH / GRID_CELL_WIDTH
 const GRID_HEIGHT_COUNT = CANVAS_HEIGHT / GRID_CELL_WIDTH
 
 const BACKGROUND_COLOR = ''
-const GRID_LINE_COLOR = 'gray'
-const GRID_BORDER_COLOR = 'black'
-const COLLISION_COLOR = '#9b9b9b'
-const START_COLOR = 'green'
-const END_COLOR = 'red'
+const GRID_LINE_COLOR = '#332522'
+const GRID_BORDER_COLOR = '#332522'
+const COLLISION_COLOR = '#19634B'
+const START_COLOR = '#00A36C'
+const END_COLOR = '#A32000'
 
 const CELL_STATES = {
   EMPTY: 0,
@@ -21,7 +21,9 @@ const CELL_STATES = {
   START: 2,
   END: 3
 }
-const grid = [...Array(GRID_WIDTH_COUNT)].map(() => [...Array(GRID_WIDTH_COUNT)].fill(CELL_STATES.EMPTY))
+const gridInit = () => [...Array(GRID_WIDTH_COUNT)]
+  .map(() => [...Array(GRID_WIDTH_COUNT)].fill(CELL_STATES.EMPTY))
+let grid = gridInit()
 
 ctx.canvas.width = CANVAS_WIDTH;
 ctx.canvas.height = CANVAS_HEIGHT;
@@ -29,14 +31,17 @@ ctx.canvas.height = CANVAS_HEIGHT;
 const STATE = {
   SELECTION: CELL_STATES.COLLISION,
   START_POS: null,
-  END_POS: null
+  END_POS: null,
 }
 
 function drawGrid() {
   // Grid Setup
   ctx.beginPath()
-  ctx.strokeStyle = GRID_BORDER_COLOR;
-  ctx.strokeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  ctx.fillStyle = GRID_BORDER_COLOR;
+  ctx.fillRect(0, 0, CANVAS_WIDTH, GRID_LINE_WIDTH);
+  ctx.fillRect(0, 0, GRID_LINE_WIDTH, CANVAS_HEIGHT);
+  ctx.fillRect(0, CANVAS_HEIGHT - 1, CANVAS_WIDTH, GRID_LINE_WIDTH);
+  ctx.fillRect(CANVAS_WIDTH - 1, 0, GRID_LINE_WIDTH, CANVAS_HEIGHT);
 
   ctx.beginPath()
   ctx.fillStyle = GRID_LINE_COLOR;
@@ -104,8 +109,43 @@ function cellToCenteredPixelPos(x, y) {
   }
 }
 
+function resetCellState() {
+  grid = gridInit();
+  draw();
+}
+
 function updateSelectedCellState(state) {
   STATE.SELECTION = state
+
+  const [
+    start, 
+    collision, 
+    end
+  ] = document.getElementsByClassName('canvas_legend_button')
+  switch(state) {
+    case CELL_STATES.END: {
+      start.classList.remove('selected')
+      collision.classList.remove('selected')
+      end.classList.add('selected')
+      break;
+    }
+    case CELL_STATES.START: {
+      start.classList.add('selected')
+      collision.classList.remove('selected')
+      end.classList.remove('selected')
+      break;
+    }
+    case CELL_STATES.COLLISION:
+      start.classList.remove('selected')
+      collision.classList.add('selected')
+      end.classList.remove('selected')
+      break;
+    default: {
+      start.classList.remove('selected')
+      collision.classList.remove('selected')
+      end.classList.remove('selected')
+    }
+  }
 }
 
 function setCellState(x, y) {
@@ -113,22 +153,43 @@ function setCellState(x, y) {
 
   switch(STATE.SELECTION) {
     case CELL_STATES.END: {
+      if (gridState === CELL_STATES.START) break;
+      if (gridState === CELL_STATES.COLLISION) break;
+      if (STATE.END_POS?.x === x && STATE.END_POS?.y === y) {
+        STATE.END_POS = null;
+        grid[y][x] = CELL_STATES.EMPTY;
+        break;
+      }
+
       if (STATE.END_POS)
         grid[STATE.END_POS.y][STATE.END_POS.x] = CELL_STATES.EMPTY
       grid[y][x] = CELL_STATES.END
       STATE.END_POS = { x, y }
       break;
     }
+
     case CELL_STATES.START: {
+      if (gridState === CELL_STATES.COLLISION) break;
+      if (gridState === CELL_STATES.END) break;
+      if (STATE.START_POS?.x === x && STATE.START_POS?.y === y) {
+        STATE.START_POS = null;
+        grid[y][x] = CELL_STATES.EMPTY;
+        break;
+      }
+
       if (STATE.START_POS)
         grid[STATE.START_POS.y][STATE.START_POS.x] = CELL_STATES.EMPTY
       grid[y][x] = CELL_STATES.START
       STATE.START_POS = { x, y }
       break;
     }
+
     case CELL_STATES.COLLISION:
     default: {
-      grid[y][x] = gridState === CELL_STATES.EMPTY ? CELL_STATES.COLLISION : CELL_STATES.EMPTY
+      if (gridState === CELL_STATES.START) break;
+      if (gridState === CELL_STATES.END) break;
+
+      grid[y][x] = gridState === CELL_STATES.EMPTY ? CELL_STATES.COLLISION : CELL_STATES.EMPTY;
     }
   }
 }
@@ -136,11 +197,10 @@ function setCellState(x, y) {
 // Cell Selection Toggle Logic
 canvas.addEventListener('click', (e) => {
   const mousePos = {
-    x: e.clientX - canvas.offsetLeft,
-    y: e.clientY - canvas.offsetTop
+    x: e.pageX - canvas.offsetLeft,
+    y: e.pageY - canvas.offsetTop
   };
 
-  // TODO: break out in to function for handling various cell states
   const cellPos = pixelToCellPos(mousePos.x, mousePos.y);
   setCellState(cellPos.x, cellPos.y);
 

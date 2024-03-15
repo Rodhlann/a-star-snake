@@ -1,10 +1,53 @@
-#canvas_wrapper {
-
+html {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: .02rem;
 }
 
-#canvas_legend {
-  width: 100px;
-  border: 1px solid black;
+Button {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: .02rem;
+  cursor: pointer;
+  border: none;
+}
+
+.banner-info {
+  color: #2d4821;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  padding: 12px 20px;
+}
+
+.banner-info p {
+  margin: 0px;
+}
+
+.banner-info p:first-child {
+  margin-bottom: 16px;
+}
+
+#canvas_wrapper {
+  display: flex;
+}
+
+canvas {
+  cursor: pointer;
+}
+
+.canvas_buttons {
+  display: flex;
+  width: 175px;
+  height: fit-content;
+  border: 1px solid #332522;
+  margin-left: 5px;
+}
+
+.canvas_buttons:last-child {
+  margin-top: 20px;
 }
 
 .canvas_legend_entry {
@@ -13,29 +56,71 @@
 }
 
 #canvas_legend_collision {
-  background-color: #9b9b9b;
+  background-color: #1A332A;
 }
 
 #canvas_legend_start {
-  background-color: green;
+  background-color: #00A36C;
 }
 
 #canvas_legend_end {
-  background-color: red;
+  background-color: #A32000;
 }
 
 .canvas_legend_block {
   width: 25px;
   height: 25px;
-  border-right: 1px solid black;
+  border-right: 1px solid #332522;
 }
 
 .canvas_legend_button {
   width: 100%;
-  border: none;
-  border-bottom: 1px solid gray;
+  height: 25px;
+  border-bottom: 1px solid #332522;
 }
 
-.canvas_legend_button:last-of-type {
+.canvas_legend_button:last-child {
   border-bottom: none;
+}
+
+.canvas_legend_button.selected {
+  font-weight: bold;
+}
+
+@media (max-width: 750px) {
+  html {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  header {
+    font-size: 22px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  #canvas_wrapper {
+    display: block;
+  }
+
+  button {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  .canvas_buttons_wrapper {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .canvas_buttons {
+    margin-left: 0px;
+  }
+
+  .canvas_buttons:last-child {
+    margin: 0px;
+    margin-left: 10px;
+  }
 }
