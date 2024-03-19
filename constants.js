@@ -1,0 +1,6 @@
+const CELL_STATES = {
+ EMPTY: 0,
+ COLLISION: 1,
+ START: 2,
+ END: 3
+}

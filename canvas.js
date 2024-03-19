@@ -15,24 +15,12 @@ const COLLISION_COLOR = '#19634B'
 const START_COLOR = '#00A36C'
 const END_COLOR = '#A32000'
 
-const CELL_STATES = {
-  EMPTY: 0,
-  COLLISION: 1,
-  START: 2,
-  END: 3
-}
 const gridInit = () => [...Array(GRID_WIDTH_COUNT)]
   .map(() => [...Array(GRID_WIDTH_COUNT)].fill(CELL_STATES.EMPTY))
-let grid = gridInit()
+STATE.grid = gridInit()
 
 ctx.canvas.width = CANVAS_WIDTH;
 ctx.canvas.height = CANVAS_HEIGHT;
-
-const STATE = {
-  SELECTION: CELL_STATES.COLLISION,
-  START_POS: null,
-  END_POS: null,
-}
 
 function drawGrid() {
   // Grid Setup
@@ -53,7 +41,7 @@ function drawGrid() {
 }
 
 function drawCells() {
-  grid.forEach((row, y) => {
+  STATE.grid.forEach((row, y) => {
     row.forEach((state, x) => {
       const cellPixelPos = cellToCellPixelPos(x, y)
       
@@ -110,12 +98,12 @@ function cellToCenteredPixelPos(x, y) {
 }
 
 function resetCellState() {
-  grid = gridInit();
+  STATE.grid = gridInit();
   draw();
 }
 
 function updateSelectedCellState(state) {
-  STATE.SELECTION = state
+  STATE.cellState = state
 
   const [
     start, 
@@ -149,38 +137,38 @@ function updateSelectedCellState(state) {
 }
 
 function setCellState(x, y) {
-  const gridState = grid[y][x]
+  const gridState = STATE.grid[y][x]
 
-  switch(STATE.SELECTION) {
+  switch(STATE.cellState) {
     case CELL_STATES.END: {
       if (gridState === CELL_STATES.START) break;
       if (gridState === CELL_STATES.COLLISION) break;
-      if (STATE.END_POS?.x === x && STATE.END_POS?.y === y) {
-        STATE.END_POS = null;
-        grid[y][x] = CELL_STATES.EMPTY;
+      if (STATE.endPos?.x === x && STATE.endPos?.y === y) {
+        STATE.endPos = null;
+        STATE.grid[y][x] = CELL_STATES.EMPTY;
         break;
       }
 
-      if (STATE.END_POS)
-        grid[STATE.END_POS.y][STATE.END_POS.x] = CELL_STATES.EMPTY
-      grid[y][x] = CELL_STATES.END
-      STATE.END_POS = { x, y }
+      if (STATE.endPos)
+        STATE.grid[STATE.endPos.y][STATE.endPos.x] = CELL_STATES.EMPTY
+      STATE.grid[y][x] = CELL_STATES.END
+      STATE.endPos = { x, y }
       break;
     }
 
     case CELL_STATES.START: {
       if (gridState === CELL_STATES.COLLISION) break;
       if (gridState === CELL_STATES.END) break;
-      if (STATE.START_POS?.x === x && STATE.START_POS?.y === y) {
-        STATE.START_POS = null;
-        grid[y][x] = CELL_STATES.EMPTY;
+      if (STATE.startPos?.x === x && STATE.startPos?.y === y) {
+        STATE.startPos = null;
+        STATE.grid[y][x] = CELL_STATES.EMPTY;
         break;
       }
 
-      if (STATE.START_POS)
-        grid[STATE.START_POS.y][STATE.START_POS.x] = CELL_STATES.EMPTY
-      grid[y][x] = CELL_STATES.START
-      STATE.START_POS = { x, y }
+      if (STATE.startPos)
+        STATE.grid[STATE.startPos.y][STATE.startPos.x] = CELL_STATES.EMPTY
+      STATE.grid[y][x] = CELL_STATES.START
+      STATE.startPos = { x, y }
       break;
     }
 
@@ -189,7 +177,7 @@ function setCellState(x, y) {
       if (gridState === CELL_STATES.START) break;
       if (gridState === CELL_STATES.END) break;
 
-      grid[y][x] = gridState === CELL_STATES.EMPTY ? CELL_STATES.COLLISION : CELL_STATES.EMPTY;
+      STATE.grid[y][x] = gridState === CELL_STATES.EMPTY ? CELL_STATES.COLLISION : CELL_STATES.EMPTY;
     }
   }
 }
