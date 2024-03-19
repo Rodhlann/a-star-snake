@@ -1,10 +1,22 @@
 const { aStar } = require('./a-star')
 
 const TEST_GRID = [
- [2,0,0,0],
+ [2,1,1,3],
  [0,1,1,0],
  [0,1,1,0],
- [0,0,3,0]
+ [0,0,0,0]
 ];
 
-aStar({ x: 0, y: 0 }, { x: 2, y: 3 }, TEST_GRID);
+let startPos, endPos;
+
+TEST_GRID.map((rows, y) => {
+  rows.map((cell, x) => {
+    if (cell === 2) {
+      startPos = { x, y }
+    } else if (cell === 3) {
+      endPos = { x, y }
+    }
+  })
+})
+
+aStar(startPos, endPos, TEST_GRID);

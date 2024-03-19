@@ -1,24 +1,6 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const CANVAS_WIDTH = 500
-const CANVAS_HEIGHT = 500
-const GRID_LINE_WIDTH = 1
-const GRID_CELL_WIDTH = 25
-const GRID_WIDTH_COUNT = CANVAS_WIDTH / GRID_CELL_WIDTH
-const GRID_HEIGHT_COUNT = CANVAS_HEIGHT / GRID_CELL_WIDTH
-
-const BACKGROUND_COLOR = ''
-const GRID_LINE_COLOR = '#332522'
-const GRID_BORDER_COLOR = '#332522'
-const COLLISION_COLOR = '#19634B'
-const START_COLOR = '#00A36C'
-const END_COLOR = '#A32000'
-
-const gridInit = () => [...Array(GRID_WIDTH_COUNT)]
-  .map(() => [...Array(GRID_WIDTH_COUNT)].fill(CELL_STATES.EMPTY))
-STATE.grid = gridInit()
-
 ctx.canvas.width = CANVAS_WIDTH;
 ctx.canvas.height = CANVAS_HEIGHT;
 
@@ -57,6 +39,11 @@ function drawCells() {
           ctx.fillRect(cellPixelPos.x, cellPixelPos.y, GRID_CELL_WIDTH, GRID_CELL_WIDTH);
           break;
         }
+        case CELL_STATES.PATH: {
+          ctx.fillStyle = PATH_COLOR;
+          ctx.fillRect(cellPixelPos.x, cellPixelPos.y, GRID_CELL_WIDTH, GRID_CELL_WIDTH);
+          break;
+        }
         case CELL_STATES.COLLISION: {
           ctx.fillStyle = COLLISION_COLOR;
           ctx.fillRect(cellPixelPos.x, cellPixelPos.y, GRID_CELL_WIDTH, GRID_CELL_WIDTH);
@@ -70,7 +57,38 @@ function drawCells() {
   })
 }
 
+// function startTimer() {
+//   TIMER = true;
+//   const start = Date.now();
+//   const timerUI = document.getElementById('a-star-timer');
+//   setTimeout(() => {
+//     timerUI.innerHTML = Date.now() - start;
+//   }, 100);
+//   const end = Date.now();
+//   timerUI.innerHTML = end - start;
+// }
+
+// function endTimer() {
+//   TIMER = false;
+// }
+
 function draw() {
+  if (STATE.startPos && STATE.endPos) {
+    // startTimer();
+    const out = aStar(STATE.startPos, STATE.endPos, STATE.grid);
+    // endTimer();
+    STATE.grid.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === CELL_STATES.PATH) STATE.grid[y][x] = CELL_STATES.EMPTY
+      })
+    })
+    out.forEach((node) => {
+      if (!STATE.grid[node[0].y][node[0].x]) {
+        STATE.grid[node[0].y][node[0].x] = CELL_STATES.PATH;
+      }
+    })
+  }
+
   drawCells();
   drawGrid();
 }
@@ -98,7 +116,7 @@ function cellToCenteredPixelPos(x, y) {
 }
 
 function resetCellState() {
-  STATE.grid = gridInit();
+  STATE = stateInit();
   draw();
 }
 
@@ -194,5 +212,7 @@ canvas.addEventListener('click', (e) => {
 
   draw();
 });
+
+STATE = stateInit();
 
 drawGrid();

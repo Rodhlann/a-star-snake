@@ -4,14 +4,6 @@ class Node {
   g // movement cost to move from the starting point to a point on the grid
   h // estimated movement cost of moving from a point on the grid to the end point (heuristic)
   p // successor parent (optional)
-
-  // constructor(point, parent, end) {
-  //   this.pos = point;
-  //   this.p = parent;
-  //   this.g = { x: parent.x - point.x, y: parent.y - point.y };
-  //   this.h = { x: point.x - end.x, y: point.y - end.y };
-  //   this.f = { x: this.g.x + this.h.x, y: this.g.y + this.h.y };
-  // }
 }
 
 const DIRECTIONS = {
@@ -27,7 +19,7 @@ const DIRECTIONS = {
 
 function isValid(x, y, closed, grid) {
   return (
-    !(x > grid[0].length-1) && 
+    !(x > grid[0].length-1) && // not outside grid boundary
     x > -1 && 
     !(y > grid.length-1) &&
     y > -1 &&
@@ -39,6 +31,7 @@ function isValid(x, y, closed, grid) {
 function aStar(start, end, grid) {
   const open = [];
   const closed = [];
+  const out = [];
 
   const startNode = new Node();
   startNode.pos = start;
@@ -51,6 +44,8 @@ function aStar(start, end, grid) {
   while (open.length) {
     open.sort((a, b) => a.f < b.f); // sort descending by node.f 
     const q = open.pop();
+
+    out.push([q.pos, q.f]);
 
     const successors = Object.values(DIRECTIONS)
       .map((dir) => {
@@ -68,7 +63,21 @@ function aStar(start, end, grid) {
       }).filter(Boolean);
 
     for (const successor of successors) {
-      if (successor.pos.x === end.x && successor.pos.y === end.y) return; // stop search
+      if (successor.pos.x === end.x && successor.pos.y === end.y) {
+
+        // --- DEBUG CODE START ---
+        // grid.map((rows, y) => {
+        //   const row = rows.map((_, x) => {
+        //     const filtered = out.find((node) => node[0].x === x && node[0].y === y)
+        //     return filtered ? Math.ceil(filtered[1]) : 0
+        //   })
+        //   console.log(row)
+        //   }
+        // );
+        // --- DEBUG CODE END ---
+ 
+      return out;
+      } // stop search
       if (open.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       if (closed.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       open.push(successor);
@@ -79,6 +88,7 @@ function aStar(start, end, grid) {
   }
 }
 
-module.exports = {
-  aStar
-}
+// TODO: comment for prod deployment; for testing only
+// module.exports = {
+//   aStar
+// }
