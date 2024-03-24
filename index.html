@@ -8,17 +8,6 @@
     <title>timpepper.dev</title>
   </head>
   <body>
-    <div class="banner banner-warn">
-      <p>This is a work in progress!</p>
-      <p>
-        <b>WARNING</b>: It is currently possible to create a complex path that
-        will hang your browser tab!! In the event this happens you will need to refresh or close
-        the browser tab and navigate back to this page. I am working on improving the 
-        algorithm to stop this from happening, I appreciate your patience!
-      </p>
-      <p><a href="https://timpepper.dev">Take me home!!</a></p>
-    </div>
-
     <header>
       <h1>A* Search Algorithm</h1>
       <p>
@@ -27,6 +16,22 @@
       </p>
     </header>
   
+    <div class="banner banner-warn">
+      <p>This is a work in progress!</p>
+      <p>
+        <b>WARNING</b>: It is currently possible to create a path that
+        will hang your browser tab!! In the event this happens you will need to refresh or close
+        the browser tab and navigate back to this page. I am working on improving the 
+        algorithm to stop this from happening, I appreciate your patience!
+      </p>
+      <p>Known triggers:</p>
+      <ul>
+        <li>Creating a wall that completely splits a path so start and end points cannot connect</li>
+        <li>Creating a room with a single space door where the end point is inside and the start point is outside along the far wall</li>
+      </ul>
+      <p><a href="https://timpepper.dev">Take me home!!</a></p>
+    </div>
+    
     <div id="canvas_wrapper">
       <div>
         <canvas id="canvas"></canvas>
@@ -49,7 +54,7 @@
               class="canvas_legend_button selected" 
               onclick="updateSelectedCellState(CELL_STATES.COLLISION)"
             >
-              Collision
+              Wall
             </button>
             <button 
               class="canvas_legend_button" 

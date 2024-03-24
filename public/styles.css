@@ -17,6 +17,7 @@ Button {
 .banner {
   border-radius: 5px;
   padding: 12px 20px;
+  margin-bottom: 20px;
 }
 
 .banner p {
