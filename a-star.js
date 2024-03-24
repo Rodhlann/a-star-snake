@@ -45,7 +45,7 @@ function aStar(start, end, grid) {
     open.sort((a, b) => a.f < b.f); // sort descending by node.f 
     const q = open.pop();
 
-    out.push([q.pos, q.f]);
+    out.push({ pos: q.pos, f: q.f });
 
     const successors = Object.values(DIRECTIONS)
       .map((dir) => {
@@ -81,7 +81,6 @@ function aStar(start, end, grid) {
       if (open.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       if (closed.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       open.push(successor);
-      console.log(successor.pos.x, successor.pos.y);
     }
 
     closed.push(q);

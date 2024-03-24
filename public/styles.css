@@ -14,20 +14,31 @@ Button {
   border: none;
 }
 
-.banner-info {
-  color: #2d4821;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
+.banner {
   border-radius: 5px;
   padding: 12px 20px;
 }
 
-.banner-info p {
-  margin: 0px;
+.banner p {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-.banner-info p:first-child {
-  margin-bottom: 16px;
+.banner p:last-child {
+  margin-bottom: 0px;
+}
+
+.banner-info {
+  color: #2d4821;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.banner-warn {
+  color: #483221;
+  background-color: #ede1d4;
+  border: 1px solid #e6d9c3;
 }
 
 #canvas_wrapper {
