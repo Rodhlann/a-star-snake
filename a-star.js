@@ -62,7 +62,8 @@ function aStar(start, end, grid) {
         }
       }).filter(Boolean);
 
-    for (const successor of successors) {
+    for (let i = 0; i < successors.length; i++) {
+      const successor = successors[i];
       if (successor.pos.x === end.x && successor.pos.y === end.y) {
 
         // --- DEBUG CODE START ---
@@ -76,8 +77,8 @@ function aStar(start, end, grid) {
         // );
         // --- DEBUG CODE END ---
  
-      return out;
-      } // stop search
+        return out; // stop search
+      } 
       if (open.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       if (closed.some((node) => node.x === successor.pos.x && node.y === successor.pos.y && node.f < successor.f)) continue; // skip successor
       open.push(successor);
