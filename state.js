@@ -6,18 +6,22 @@ const DEFAULT_STATE = () => ({
  cellState: CELL_STATES.COLLISION,
  startPos: null,
  endPos: null,
- aStarPath: []
+ aStarPath: [],
+ walls: [],
+ duration: 0
 })
 
 let STATE = {};
 
 const stateInit = () => {
-  const { grid, cellState, startPos, endPos, aStarPath } = DEFAULT_STATE();
+  const { grid, cellState, startPos, endPos, aStarPath, walls, duration } = DEFAULT_STATE();
   return {
     grid,
     cellState,
     startPos,
     endPos,
-    aStarPath
+    aStarPath,
+    walls,
+    duration
   }
 };

@@ -35,16 +35,22 @@ function cellToCenteredPixelPos(x, y) {
 }
 
 function resetAStarPath() {
-  [...STATE.aStarPath].forEach(({ pos: { x, y } }) => {
+  [...STATE.aStarPath].forEach(({ x, y }) => {
     if (STATE.grid[y][x] === CELL_STATES.PATH)
       STATE.grid[y][x] = CELL_STATES.EMPTY;
   });
   STATE.aStarPath = [];
 }
 
-function drawAStarPath(aStarPath) {
+function flattenNodes(node) {
+  if (!node) return [];
+  return [{x: node.x, y: node.y}, ...flattenNodes(node.parent)]
+}
+
+function drawAStarPath(finalNode) {
+  const aStarPath = flattenNodes(finalNode);
   STATE.aStarPath = aStarPath;
-  aStarPath.forEach(({ pos: { x, y } }) => {
+  aStarPath.forEach(({x, y}) => {
     if (STATE.grid[y][x] === CELL_STATES.EMPTY)
       STATE.grid[y][x] = CELL_STATES.PATH;
   });
@@ -103,29 +109,26 @@ function drawGrid() {
   })
 }
 
-// function startTimer() {
-//   TIMER = true;
-//   const start = Date.now();
-//   const timerUI = document.getElementById('a-star-timer');
-//   setTimeout(() => {
-//     timerUI.innerHTML = Date.now() - start;
-//   }, 100);
-//   const end = Date.now();
-//   timerUI.innerHTML = end - start;
-// }
-
-// function endTimer() {
-//   TIMER = false;
-// }
+function drawDuration() {
+  document.getElementById('duration').innerHTML = `${STATE.duration}ms`;
+}
 
 function draw() {
   resetAStarPath();
   if (STATE.startPos && STATE.endPos) {
-    const result = aStar(STATE.startPos, STATE.endPos, STATE.grid)
+    const width = STATE.grid[0].length;
+    const height = STATE.grid.length;
+
+    const start = performance.now();
+    const result = aStar(STATE.startPos, STATE.endPos, width, height, STATE.walls)
+    const duration = performance.now() - start;
+    STATE.duration = duration.toFixed(2);
+
     drawAStarPath(result);
   }
   drawCells();
   drawGrid();
+  drawDuration();
 }
 
 function resetCellState() {
@@ -209,6 +212,8 @@ function setCellState(x, y) {
       if (gridState === CELL_STATES.END) break;
 
       // Overwrite EMPTY and PATH states with COLLISION state
+      const index = STATE.walls.findIndex((wall) => wall[0] == x && wall[1] == y)
+      index >= 0 ? STATE.walls.splice(index, 1) : STATE.walls.push([x, y]);
       STATE.grid[y][x] = [CELL_STATES.EMPTY, CELL_STATES.PATH].includes(gridState)
         ? CELL_STATES.COLLISION 
         : CELL_STATES.EMPTY;
