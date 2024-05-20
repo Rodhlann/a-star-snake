@@ -1,84 +1,29 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html, charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./public/styles.css" />
     <title>timpepper.dev</title>
   </head>
   <body>
-    <header>
-      <h1>A* Search Algorithm</h1>
-      <p>
-        Javascript implementation of the popular A* Search Algorithm intended as a learning 
-        exercise and reference for future game development endeavors.
-      </p>
-    </header>
-  
-    <!-- <div class="banner banner-warn">
-      <p>This is a work in progress!</p>
-      <p>
-        <b>WARNING</b>: It is currently possible to create a path that
-        will hang your browser tab!! In the event this happens you will need to refresh or close
-        the browser tab and navigate back to this page. I am working on improving the 
-        algorithm to stop this from happening, I appreciate your patience!
-      </p>
-      <p>Known triggers:</p>
-      <ul>
-        <li>Creating a wall that completely splits a path so start and end points cannot connect</li>
-        <li>Creating a room with a single space door where the end point is inside and the start point is outside along the far wall</li>
-      </ul>
-      <p><a href="https://timpepper.dev">Take me home!!</a></p>
-    </div> -->
-    
     <div id="canvas_wrapper">
       <div>
         <canvas id="canvas"></canvas>
       </div>
       <div class="canvas_buttons_wrapper">
         <div class="canvas_buttons">
-          <div class="canvas_legend_colors">
-            <div id="canvas_legend_start" class="canvas_legend_block"></div>
-            <div id="canvas_legend_collision" class="canvas_legend_block"></div>
-            <div id="canvas_legend_end" class="canvas_legend_block"></div>
-          </div>
-          <div id="canvas_legend_buttons">
-            <button 
-              class="canvas_legend_button" 
-              onclick="updateSelectedCellState(CELL_STATES.START)"
-            >
-              Start
-            </button>
-            <button 
-              class="canvas_legend_button selected" 
-              onclick="updateSelectedCellState(CELL_STATES.COLLISION)"
-            >
-              Wall
-            </button>
-            <button 
-              class="canvas_legend_button" 
-              onclick="updateSelectedCellState(CELL_STATES.END)"
-            >
-              End
-            </button>
-          </div>
-        </div>
-        <div class="canvas_buttons">
-          <button 
-            class="canvas_legend_button" 
-            onclick="resetCellState()"
-          >
-            Reset
+          <button class="canvas_legend_button" onclick="start()">
+            Play
           </button>
         </div>
       </div>
     </div>
-    <span>Timer: </span><span id="duration">0.00ms</span>
 
-    <script type="text/javascript" src="./constants.js"></script>
-    <script type="text/javascript" src="./state.js"></script>
-    <script type="text/javascript" src="./canvas.js"></script>
-    <script type="text/javascript" src="./a-star.js"></script>
+    <script src="./public/a-star.js"></script>
+    <script src="./public/constants.js"></script>
+    <script src="./public/state.js"></script>
+    <script src="./public/canvas.js"></script>
   </body>
 </html>

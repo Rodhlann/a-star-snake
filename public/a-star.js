@@ -23,7 +23,7 @@ const isInvalidCell = (x, y, width, height, walls) => {
   || x < 0
   || y >= height
   || y < 0
-  || walls.some((wall) => wall[0] == x && wall[1] == y) // Collision
+  || walls.some((wall) => wall.x == x && wall.y == y) // Collision
 }
 
 function aStar(start, end, width, height, walls) {
@@ -54,7 +54,7 @@ function aStar(start, end, width, height, walls) {
 
     closed.push(best);
 
-    for (dir of Object.values(DIRECTIONS)) {
+    for (let dir of Object.values(DIRECTIONS)) {
       const x = best.x + dir.x;
       const y = best.y + dir.y;
 
@@ -80,8 +80,3 @@ function aStar(start, end, width, height, walls) {
     }
   }
 }
-
-// TODO: comment for prod deployment; for testing only
-// module.exports = {
-//   aStar
-// }

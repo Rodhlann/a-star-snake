@@ -20,3 +20,5 @@ const CELL_STATES = {
  END: 3,
  PATH: 4
 }
+
+window.CELL_STATES = CELL_STATES;
